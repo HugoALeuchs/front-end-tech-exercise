@@ -11,23 +11,26 @@ import { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 
 export async function getServerSideProps() {
-  const ordersRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+  const orderFetch = fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
     headers: {
       "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
     },
   });
-  const ordersData = await ordersRes.json();
 
-  const productsRes = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products`,
-    {
-      headers: {
-        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-      },
-    }
-  );
+  const productFetch = fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+    headers: {
+      "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+    },
+  });
+
+  const [ordersRes, productsRes] = await Promise.all([
+    orderFetch,
+    productFetch,
+  ]);
+
+  const ordersData = await ordersRes.json();
   const productsData = await productsRes.json();
 
   if (!ordersData || !productsData) {
