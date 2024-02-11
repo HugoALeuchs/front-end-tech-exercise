@@ -7,8 +7,9 @@ This project is a full-stack application built with Next.js, TypeScript, and Mat
 To get started with this project, follow these steps:
 
 1. Clone the repository.
-2. Install the dependencies.
-3. Start the development server.
+2. Install the dependencies with `npm install`.
+3. Start the development server with `npm run dev`.
+4. Make sure to set the `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_API_TOKEN` environment variables in a `.env` file.
 
 The application should now be running at [http://localhost:3000](http://localhost:3000).
 
