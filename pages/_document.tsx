@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Html,
   Head,
@@ -12,7 +11,6 @@ import {
   DocumentHeadTagsProps,
   documentGetInitialProps,
 } from "@mui/material-nextjs/v14-pagesRouter";
-import theme from "../src/theme/theme";
 
 export default function MyDocument(
   props: DocumentProps & DocumentHeadTagsProps
