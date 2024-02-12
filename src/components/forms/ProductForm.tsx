@@ -4,7 +4,8 @@ import * as Yup from "yup";
 import { ProductDataInterface } from "../../interfaces/ProductInterface";
 import { useImperativeHandle, forwardRef, Ref } from "react";
 import { CustomerInterface } from "../../interfaces/CustomerInterface";
-import { createProduct, updateProduct } from "../../service/Client";
+import { useCreateProduct } from "../../hooks/useCreateProduct";
+import { useUpdateProduct } from "../../hooks/useUpdateProduct";
 
 interface ProductFormProps {
   productDetails: ProductDataInterface;
@@ -39,6 +40,8 @@ const ProductForm = forwardRef(
     }: ProductFormProps,
     ref: Ref<any>
   ) => {
+    const { create } = useCreateProduct();
+    const { update } = useUpdateProduct();
     const formik = useFormik({
       initialValues: productDetails,
       validationSchema: ProductFormValidationSchema,
@@ -49,15 +52,13 @@ const ProductForm = forwardRef(
         if (productID) {
           setLoading(true);
           setSuccess(false);
-          await updateProduct(values, productID, relationships).then(
-            (response) => {
-              setResponse(response);
-            }
-          );
+          await update(values, productID, relationships).then((response) => {
+            setResponse(response);
+          });
         } else {
           setLoading(true);
           setSuccess(false);
-          await createProduct(values, relationships).then((response) => {
+          await create(values, relationships).then((response) => {
             setResponse(response);
           });
         }

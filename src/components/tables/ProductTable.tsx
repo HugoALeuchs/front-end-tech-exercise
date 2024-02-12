@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { deleteProduct } from "../../service/Client";
 import { ProductInterface } from "../../interfaces/ProductInterface";
+import { useDeleteProduct } from "../../hooks/useDeleteProduct";
 
 // Generate Order Data
 function createData(id: number, name: string, sku: string) {
@@ -42,6 +43,7 @@ export default function ProductTable({
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [loading, setLoading] = useState(false);
+  const { deleteProductItem } = useDeleteProduct();
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -55,7 +57,7 @@ export default function ProductTable({
   const handleDelete = (id: number) => {
     setLoading(true);
     try {
-      deleteProduct(id.toString()).then(() => {
+      deleteProductItem(id.toString()).then(() => {
         refreshData();
         setLoading(false);
       });

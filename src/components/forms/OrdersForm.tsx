@@ -10,8 +10,10 @@ import {
 } from "react";
 import * as Yup from "yup";
 import { CustomerInterface } from "../../interfaces/CustomerInterface";
-import { createOrder, updateOrder } from "../../service/Client";
 import { ProductOptions } from "../../interfaces/ProductInterface";
+import { usePlaceOrder } from "../../hooks/usePlaceOrder";
+import { useUpdateOrder } from "../../hooks/useUpdateOrder";
+import { Face } from "@mui/icons-material";
 
 interface OrderFormProps {
   order: OrderInterface;
@@ -43,6 +45,8 @@ const OrderForm = forwardRef(
     }: OrderFormProps,
     ref: Ref<any>
   ) => {
+    const { placeOrder } = usePlaceOrder();
+    const { update } = useUpdateOrder();
     const formik = useFormik({
       initialValues: order.attributes,
       validationSchema: OrderFormValidationSchema,
@@ -72,11 +76,15 @@ const OrderForm = forwardRef(
           },
         };
         if (order.id) {
-          await updateOrder(newOrder, order.id).then((response) => {
+          setLoading(true);
+          await update(newOrder, order.id).then((response) => {
+            setLoading(false);
             setResponse(response);
           });
         } else {
-          await createOrder(newOrder).then((response) => {
+          setLoading(true);
+          await placeOrder(newOrder).then((response) => {
+            setLoading(false);
             setResponse(response);
           });
         }
